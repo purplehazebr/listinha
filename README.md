@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Lista de Compras Inteligente
 
 ## Descrição
@@ -41,4 +41,3 @@ Instruções detalhadas para configurar o ambiente de desenvolvimento e executar
 3.  Criação da interface frontend básica para visualização e adição de itens à lista.
 =======
 # listinha
->>>>>>> 15c4f78c39d1849bd0398111c52f0626dadc66d8
