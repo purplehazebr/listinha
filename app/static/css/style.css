@@ -1,0 +1,384 @@
+/* app/static/css/style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif; /* Fonte base mais limpa para UI geral */
+    margin: 0;
+    padding: 0;
+    background-color: #fdfaf2; /* Um branco papel, ligeiramente amarelado/creme */
+    color: #3a3a3a; /* Cor de "tinta" escura, não preto puro */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha ao topo */
+    min-height: 100vh;
+    padding-top: 20px; 
+    padding-bottom: 40px; /* Espaço na parte inferior também */
+}
+
+.container {
+    background-color: #fff; /* Fundo branco para o "papel" da lista */
+    padding: 30px 40px; 
+    border-radius: 3px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08); 
+    width: 100%;
+    max-width: 600px; 
+    border: 1px solid #e0e0e0; 
+}
+
+h1, h2 {
+    font-family: 'Caveat', cursive; 
+    color: #2c5d7c; 
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h1 { /* Título principal da página (ex: "Lista de Compras") */
+    font-size: 3.5em; 
+    margin-bottom: 30px;
+}
+
+h2 { /* Subtítulos (ex: "Adicionar Item", "Minha Lista de Compras") */
+    font-size: 2.5em; 
+    border-bottom: 1px dashed #b0c4de; 
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
+
+.input-section {
+    margin-bottom: 30px;
+}
+
+.input-section div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-family: 'Roboto', sans-serif; 
+    font-weight: bold;
+    font-size: 0.95em;
+    color: #555;
+}
+
+input[type="text"], input[type="number"] {
+    width: calc(100% - 22px); 
+    padding: 10px;
+    margin-bottom: 5px;
+    border: none; 
+    border-bottom: 1px solid #ccc; 
+    border-radius: 0; 
+    font-family: 'Roboto', sans-serif; 
+    font-size: 1em;
+    background-color: transparent; 
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    outline: none;
+    border-bottom-color: #2c5d7c; 
+}
+
+#product-suggestions {
+    border: 1px solid #e0e0e0;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: #fff;
+    z-index: 1000;
+    width: calc(100% - 22px); /* Ajustar à largura do input, considerando o padding do container */
+    max-width: calc(600px - 80px - 22px); /* Max-width do container - paddings laterais do container - padding do input */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9em;
+}
+/* Ajuste para o max-width do #product-suggestions se o input está dentro de .container */
+.input-section input[type="text"] + #product-suggestions {
+    width: calc(100% - 22px); /* Largura relativa ao pai do input */
+}
+
+
+#product-suggestions div {
+    padding: 10px; 
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+#product-suggestions div:last-child {
+    border-bottom: none;
+}
+#product-suggestions div:hover {
+    background-color: #e9f5ff; 
+}
+
+button#add-item-btn { 
+    padding: 12px 20px;
+    background-color: #5a8e5a; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 1em;
+    display: block; 
+    margin: 20px auto 0 auto; 
+    transition: background-color 0.3s;
+}
+
+button#add-item-btn:hover {
+    background-color: #4a7e4a; 
+}
+
+.list-section {
+    margin-top: 40px;
+}
+
+#shopping-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#shopping-list li {
+    padding: 15px 5px; 
+    border-bottom: 1px solid #e0e0e0; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alinha na vertical o X e o bloco de preço com o bloco de detalhes */
+    font-family: 'Caveat', cursive; 
+    font-size: 1.8em; /* Nome do produto com este tamanho */
+    color: #404040;
+    position: relative; 
+}
+
+#shopping-list li:last-child {
+    border-bottom: none; 
+}
+
+#shopping-list li .item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; 
+    padding-right: 10px; 
+}
+
+#shopping-list li .item-name {
+    font-weight: 700; /* 'Caveat' tem pesos 400 e 700, então 700 é o bold */
+    margin-bottom: 4px; 
+    line-height: 1.2; 
+}
+
+#shopping-list li .item-brand,
+#shopping-list li .item-unit-info {
+    font-family: 'Roboto', sans-serif; 
+    font-size: 0.38em; /* Bem pequeno (relativo ao 1.8em do li) */
+    color: #777;     
+    line-height: 1.3; 
+}
+
+#shopping-list li .item-brand + .item-unit-info { /* Se a unidade vier logo após a marca */
+    margin-top: 1px; 
+}
+
+#shopping-list li .item-price-quantity {
+    font-family: 'Roboto', sans-serif; 
+    font-size: 0.55em; /* Menor que o nome, maior que os detalhes. Ajuste se necessário */
+    color: #333;
+    min-width: 100px; /* Espaço mínimo para o preço */
+    text-align: right;
+    align-self: center; /* Alinha este bloco verticalmente com o .item-details */
+    padding-left: 10px; /* Espaço para não colar nos detalhes se estes forem longos */
+}
+
+#shopping-list li .remove-item {
+    color: #c06060; 
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif; 
+    font-weight: bold;
+    font-size: 0.8em; /* Relativo ao 1.8em do li (para o "X") */
+    padding: 5px 8px; /* Ajustado para ser mais redondo */
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+    align-self: center; /* Alinha o X verticalmente */
+    line-height: 1; /* Para garantir que o X fique bem dentro do padding */
+}
+
+#shopping-list li .remove-item:hover {
+    background-color: #c06060;
+    color: white;
+}
+
+.total-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #2c5d7c; 
+    text-align: right;
+}
+
+.total-section h3 {
+    font-family: 'Caveat', cursive;
+    font-size: 2.2em;
+    color: #333;
+    margin: 0;
+}
+
+.total-section h3 span { /* Onde o valor total € é mostrado */
+    font-weight: bold;
+    color: #2c5d7c; 
+}
+
+/* Estilos para a Tela Inicial */
+#initial-screen h1, #initial-screen h2 {
+    /* Seus estilos de h1, h2 podem já cobrir isso */
+}
+#initial-screen .input-section {
+    margin-bottom: 30px;
+}
+#initial-screen label { /* Adicionado */
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+#new-list-name { /* Adicionado */
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px; /* Espaço antes do botão */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+#create-list-btn { /* Adicionado */
+    padding: 10px 15px;
+    background-color: #5a8e5a; /* Verde do add-item-btn */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#create-list-btn:hover {
+    background-color: #4a7e4a;
+}
+
+#saved-lists-ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+#saved-lists-ul li {
+    padding: 12px 8px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#saved-lists-ul li:last-child {
+    border-bottom: none;
+}
+#saved-lists-ul li a {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1em;
+    color: #2c5d7c;
+    text-decoration: none;
+    font-weight: bold;
+}
+#saved-lists-ul li a:hover {
+    text-decoration: underline;
+}
+.list-actions {
+    font-size: 0.8em;
+    color: #777;
+}
+.list-actions small {
+    margin-right: 10px;
+}
+.delete-list-btn {
+    background-color: transparent;
+    color: #c06060;
+    border: 1px solid #c06060;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+.delete-list-btn:hover {
+    background-color: #c06060;
+    color: white;
+}
+
+/* Botão "Voltar" */
+#back-to-lists-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px; /* Espaço abaixo do botão */
+    font-size: 0.9em;
+}
+#back-to-lists-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Título da lista atual */
+#current-list-title {
+    /* Seus estilos de h1 devem cobrir, ajuste se necessário */
+    /* Exemplo: font-size: 2.8em; margin-bottom: 25px; */
+}
+
+
+/* Estilos para Itens da Lista de Compras (com checkbox e riscado) */
+#shopping-list li {
+    /* display: flex; align-items: center; já devem estar assim */
+}
+
+.item-purchase-checkbox {
+    margin-right: 12px; /* Espaço entre checkbox e detalhes */
+    transform: scale(1.2); /* Aumenta um pouco o checkbox */
+    cursor: pointer;
+    flex-shrink: 0; /* Evita que o checkbox encolha */
+}
+
+#shopping-list li .item-details {
+    /* flex-grow: 1; já deve estar assim */
+}
+
+.item-name.strikethrough {
+    text-decoration: line-through;
+    color: #888; /* Cor mais clara para texto riscado */
+}
+
+/* Classe para o LI inteiro quando o item está comprado (opcional) */
+#shopping-list li.item-is-purchased {
+    background-color: #f9f9f9; /* Fundo sutilmente diferente */
+    opacity: 0.8; /* Um pouco de opacidade */
+}
+
+#shopping-list li .remove-item {
+    /* Seus estilos existentes. Garanta que está alinhado. */
+    /* flex-shrink: 0; */
+}
+
+/* Garante que a div de sugestões não fique sobre outros elementos da tela inicial */
+#initial-screen #product-suggestions {
+    display: none !important; /* Esconde na tela inicial, pois o input de item não está lá */
+}
+
+/* Ajuste para a largura da caixa de sugestões na tela de detalhes */
+#list-detail-screen .input-section input[type="text"] + #product-suggestions {
+    /* O seu width: calc(100% - 22px); deve funcionar bem aqui */
+    /* max-width também, se o .container da list-detail-screen tiver max-width */
+}
+
+/* Ajuste do título H2 dentro da list-detail-screen */
+#list-detail-screen .list-section h2 {
+    /* font-family: 'Caveat', cursive;  já deve estar no seu h2 geral */
+    /* color: #2c5d7c; */
+    /* text-align: center;  talvez não queira centralizado aqui */
+    /* margin-bottom: 25px; */
+    /* border-bottom: 1px dashed #b0c4de; */
+    /* padding-bottom: 10px; */
+    /* margin-top: 30px; */
+    font-size: 2.0em; /* Um pouco menor que o H2 da seção de adicionar item */
+}

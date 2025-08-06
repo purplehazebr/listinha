@@ -5,6 +5,10 @@ import logging
 import time
 from datetime import datetime
 import json
+import os
+
+from datetime import datetime # Já deve estar lá
+import logging # Já deve estar lá
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -221,7 +225,7 @@ def scrape_category_with_selenium(driver, url, categoria_nome):
         last_height = driver.execute_script("return document.body.scrollHeight")
         scroll_attempts_no_change = 0
         max_scroll_retries_no_change = 3 
-        max_total_scrolls = 25 # Limite de segurança para scrolls totais
+        max_total_scrolls = 50 # Limite de segurança para scrolls totais
         scrolls_done = 0
 
         while scrolls_done < max_total_scrolls:
@@ -280,6 +284,7 @@ def scrape_category_with_selenium(driver, url, categoria_nome):
     return produtos_coletados_categoria
 
 # --- Função main --- (igual à anterior)
+# Na função main() do pingo_doce_scraper.py, substitua a parte de salvar em Excel:
 def main():
     logger.info("Iniciando o web scraper de preços do Pingo Doce com Selenium.")
     todos_os_produtos = []
@@ -297,28 +302,52 @@ def main():
         logger.info(f"--- Fim do scraping da categoria: {categoria_nome} ---")
         if len(urls_categorias) > 1 and categoria_nome != list(urls_categorias.keys())[-1]:
             logger.info(f"Aguardando 10 segundos antes da próxima categoria...")
-            time.sleep(10)
+            time.sleep(10) # Mantenha seus tempos de espera
 
     if driver:
         logger.info("Fechando o WebDriver.")
         driver.quit()
 
+    # ----- NOVA PARTE PARA SALVAR EM JSON -----
     if todos_os_produtos:
         logger.info(f"Total de {len(todos_os_produtos)} produtos coletados de todas as categorias.")
-        df = pd.DataFrame(todos_os_produtos)
-        colunas_ordenadas = ['ID_Produto', 'Nome', 'Marca', 'Preco', 'Unidade_Info', 
-                             'Categoria_Scraping', 'Categorias_GTM', 'Data_Coleta']
-        colunas_existentes = [col for col in colunas_ordenadas if col in df.columns]
-        df = df[colunas_existentes]
         
-        nome_arquivo_excel = f"precos_pingodoce_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        # Define o diretório de saída (assumindo que está na raiz do projeto)
+        # O scraper deve estar na pasta 'scraper/', então '..' volta para a raiz
+        # e depois entra em 'dados_coletados/'
+        # Se o seu scraper estiver na raiz, apenas 'dados_coletados' é suficiente.
+        # Ajuste conforme a localização do seu script scraper.
+        # Assumindo que o scraper está em 'scraper/' e 'dados_coletados' está na raiz:
+        # output_dir = os.path.join(os.path.dirname(__file__), "..", "dados_coletados")
+
+        # Se o script scraper e a pasta dados_coletados estão no mesmo nível (raiz do projeto):
+        output_dir = "dados_coletados"
+
+
+        if not os.path.exists(output_dir):
+            try:
+                os.makedirs(output_dir)
+                logger.info(f"Diretório '{output_dir}' criado com sucesso.")
+            except OSError as e:
+                logger.error(f"Erro ao criar o diretório '{output_dir}': {e}")
+                # Decide se quer parar ou tentar salvar na pasta atual
+                # Por simplicidade, vamos tentar salvar na pasta atual do script se a criação falhar
+                output_dir = "." 
+
+        # Gera o nome do arquivo JSON com timestamp
+        timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
+        nome_arquivo_json = os.path.join(output_dir, f"precos_pingodoce_{timestamp_str}.json")
+        
         try:
-            df.to_excel(nome_arquivo_excel, index=False)
-            logger.info(f"Dados salvos em '{nome_arquivo_excel}'")
+            with open(nome_arquivo_json, 'w', encoding='utf-8') as f:
+                json.dump(todos_os_produtos, f, ensure_ascii=False, indent=4)
+            logger.info(f"Dados salvos com sucesso em '{nome_arquivo_json}'")
+        except IOError as e:
+            logger.error(f"Erro de I/O ao salvar o arquivo JSON '{nome_arquivo_json}': {e}")
         except Exception as e:
-            logger.error(f"Erro ao salvar o arquivo Excel: {e}")
+            logger.error(f"Erro inesperado ao salvar o arquivo JSON: {e}")
     else:
-        logger.warning("Nenhum produto foi coletado. O arquivo Excel não será gerado.")
+        logger.warning("Nenhum produto foi coletado. O arquivo JSON não será gerado.")
 
     logger.info("Scraping concluído.")
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title> <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="app-container">
+        <div id="initial-screen" class="container">
+            <h1>Minhas Listas de Compras</h1>
+            <div class="input-section">
+                <h2>Criar Nova Lista</h2>
+                <label for="new-list-name">Nome da Lista:</label>
+                <input type="text" id="new-list-name" placeholder="Ex: Compras da Semana">
+                <button id="create-list-btn">Criar Lista</button>
+            </div>
+            <div class="list-section">
+                <h2>Listas Salvas</h2>
+                <ul id="saved-lists-ul">
+                    </ul>
+            </div>
+        </div>
+
+        <div id="list-detail-screen" class="container" style="display:none;">
+            <button id="back-to-lists-btn">&laquo; Voltar para Minhas Listas</button>
+            <h1 id="current-list-title"></h1> <div class="input-section">
+                <h2>Adicionar Item</h2>
+                <div>
+                    <label for="item-name">Nome do Produto:</label>
+                    <input type="text" id="item-name" placeholder="Ex: Arroz, Leite...">
+                    <div id="product-suggestions" style="display:none;"></div>
+                </div>
+                <div>
+                    <label for="item-quantity">Quantidade:</label>
+                    <input type="number" id="item-quantity" value="1" min="1">
+                </div>
+                <button id="add-item-btn">Adicionar à Lista</button>
+            </div>
+
+            <div class="list-section">
+                <h2 id="items-list-header">Comprar:</h2> <ul id="shopping-list">
+                    </ul>
+                <div class="total-section">
+                    <h3>Estimativa Total: <span id="total-cost">0.00 €</span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
